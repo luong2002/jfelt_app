@@ -1,0 +1,14 @@
+package threads;
+
+public class Client_Thread implements Runnable {
+
+	private static ServerSocket serverSocket;
+
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

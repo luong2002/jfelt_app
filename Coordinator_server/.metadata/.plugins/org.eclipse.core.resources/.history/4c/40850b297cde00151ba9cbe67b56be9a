@@ -1,0 +1,20 @@
+package entities;
+
+public class Driver {
+
+	private String name;
+	private String ID;
+	
+	
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getID() {
+		return ID;
+	}
+	
+}

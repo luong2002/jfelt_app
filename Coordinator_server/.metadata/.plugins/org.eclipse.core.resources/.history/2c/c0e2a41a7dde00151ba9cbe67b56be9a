@@ -1,0 +1,16 @@
+package threads;
+
+import java.net.ServerSocket;
+
+public class Client_Thread implements Runnable {
+
+	private static ServerSocket serverSocket;
+	private static Socket clientSocket
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
