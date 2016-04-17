@@ -1,8 +1,0 @@
-package entities;
-
-public class Driver {
-
-	private String name;
-	private String ID;
-	
-}

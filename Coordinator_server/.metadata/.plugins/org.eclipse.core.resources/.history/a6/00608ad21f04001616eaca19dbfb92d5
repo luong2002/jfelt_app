@@ -1,0 +1,17 @@
+package main;
+
+import threads.Client_Thread;
+import threads.Driver_Thread;
+
+public class Main {
+
+	public static void main(String[] args) {
+		ClientServer ct = new Client_Thread();
+		Driver_Thread dt = new Driver_Thread();
+		
+		ct.run();
+		dt.run();
+
+	}
+
+}

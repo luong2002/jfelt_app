@@ -22,6 +22,7 @@ public class Form_Fill extends AppCompatActivity {
 
 
     private EditText textField;
+    private Connect_Thread ct;
 
 
     @Override
@@ -30,16 +31,20 @@ public class Form_Fill extends AppCompatActivity {
         setContentView(R.layout.activity_form__fill);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ct = null;
+
+        Connect_Thread.setConnected(false);
 
         Button fab = (Button) findViewById(R.id.button_serv);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText textField = (EditText) findViewById(R.id.textField);
-                String messsage = textField.getText().toString(); //get the text message on the text field
+                String message = textField.getText().toString(); //get the text message on the text field
                 textField.setText("");
 
-                new Connect_Thread().execute(messsage);
+                ct  = new Connect_Thread();
+                ct.execute(message);
 
             }
         });
@@ -65,5 +70,14 @@ public class Form_Fill extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(ct != null)
+            ct.closeConnection();
+
+        Connect_Thread.setConnected(false);
+        super.onBackPressed();
     }
 }
