@@ -72,7 +72,6 @@ public class Driver_Thread extends Thread {
 		}
 
 		try {
-			bufferedReader.close();
 			streamReader.close();
 			streamWriter.close();
 			driverSocket.close();

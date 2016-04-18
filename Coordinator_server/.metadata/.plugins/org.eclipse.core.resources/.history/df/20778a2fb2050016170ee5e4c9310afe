@@ -5,18 +5,19 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Driver_Thread extends Thread {
+public class Client_Thread extends Thread {
 
-	private Socket driverSocket;
+	private Socket clientSocket;
 	private InputStreamReader streamReader;
-	private OutputStreamWriter streamWriter;
+	private PrintWriter printwriter;
 	private BufferedReader bufferedReader;
 	private boolean execute;
 
 	/**
-	 * Constructor for the Driver_Thread class that receives the socket and
+	 * Constructor for the Client_Thread class that receives the socket and
 	 * attempts to create the Input and Output streams for receiving and sending
 	 * messages
 	 *
@@ -27,20 +28,19 @@ public class Driver_Thread extends Thread {
 	 *            - Web socket of the client that enables the communication
 	 * @throws
 	 */
-	public Driver_Thread(Socket driverSocket) throws IOException {
+	public Client_Thread(Socket clientSocket) throws IOException {
 		super("Server");
 		this.execute = true;
-		this.driverSocket = driverSocket;
-		this.streamWriter = new OutputStreamWriter(
-				driverSocket.getOutputStream());
-		this.streamReader = new InputStreamReader(driverSocket.getInputStream());
+		this.clientSocket = clientSocket;
+		printwriter = new PrintWriter(clientSocket.getOutputStream(), true);
+		this.streamReader = new InputStreamReader(clientSocket.getInputStream());
 		this.bufferedReader = new BufferedReader(streamReader); // get the
 																// client
 																// message
 	}
 
 	/**
-	 * The thread listens for driver communication attempts
+	 * The thread listens for client communication attempts
 	 *
 	 * @author Felipe Izepe
 	 * @version 1.0
@@ -74,8 +74,8 @@ public class Driver_Thread extends Thread {
 		try {
 			bufferedReader.close();
 			streamReader.close();
-			streamWriter.close();
-			driverSocket.close();
+			printwriter.close();
+			clientSocket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,7 +84,7 @@ public class Driver_Thread extends Thread {
 	}
 
 	/**
-	 * attempts to sends a message to the driver
+	 * attempts to sends a message to the client
 	 *
 	 * @author Felipe Izepe
 	 * @version 1.0
@@ -94,7 +94,13 @@ public class Driver_Thread extends Thread {
 	 * @return True if the message was send successfully and false otherwise
 	 */
 	public boolean sendMessage(String message) {
-		BufferedWriter bufferWriter = new BufferedWriter(streamWriter);
+		 printwriter.println(message);  //write the message to output stream
+	        if(printwriter.checkError())
+	        {
+	            Log.i("ERROR:","Message not sent");
+	        }
+	        printwriter.flush();
+
 		try {
 			bufferWriter.write(message);
 		} catch (IOException e) {

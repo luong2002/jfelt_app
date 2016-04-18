@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutionException;
 
 
 public class Form_Fill extends AppCompatActivity {
@@ -44,7 +45,17 @@ public class Form_Fill extends AppCompatActivity {
                 textField.setText("");
 
                 ct  = new Connect_Thread();
-                ct.execute(message);
+                try {
+                    ct.execute(message).get();
+                }catch (InterruptedException e1)
+                {
+                    e1.printStackTrace();
+                }catch (ExecutionException e2)
+                {
+                    e2.printStackTrace();
+                }
+
+                ct.startCommunication();
 
             }
         });
@@ -80,4 +91,6 @@ public class Form_Fill extends AppCompatActivity {
         Connect_Thread.setConnected(false);
         super.onBackPressed();
     }
+
+
 }

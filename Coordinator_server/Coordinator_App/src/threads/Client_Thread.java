@@ -1,17 +1,16 @@
 package threads;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Client_Thread extends Thread {
 
 	private Socket clientSocket;
 	private InputStreamReader streamReader;
-	private OutputStreamWriter streamWriter;
+	private PrintWriter printwriter;
 	private BufferedReader bufferedReader;
 	private boolean execute;
 
@@ -31,8 +30,7 @@ public class Client_Thread extends Thread {
 		super("Server");
 		this.execute = true;
 		this.clientSocket = clientSocket;
-		this.streamWriter = new OutputStreamWriter(
-				clientSocket.getOutputStream());
+		printwriter = new PrintWriter(clientSocket.getOutputStream(), true);
 		this.streamReader = new InputStreamReader(clientSocket.getInputStream());
 		this.bufferedReader = new BufferedReader(streamReader); // get the
 																// client
@@ -51,17 +49,18 @@ public class Client_Thread extends Thread {
 		String message;
 		System.out.println("Checking for messages");
 		while (execute) {
-
+			
 			try {
 				if (bufferedReader.ready()) {
 					message = bufferedReader.readLine();
 					System.out.println(message);
+					sendMessage("MEssage Received");
 				}
 			} catch (IOException e) {
 				execute = false;
 				e.printStackTrace();
 			}
-			
+
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -72,8 +71,9 @@ public class Client_Thread extends Thread {
 		}
 
 		try {
+			bufferedReader.close();
 			streamReader.close();
-			streamWriter.close();
+			printwriter.close();
 			clientSocket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -93,14 +93,12 @@ public class Client_Thread extends Thread {
 	 * @return True if the message was send successfully and false otherwise
 	 */
 	public boolean sendMessage(String message) {
-		BufferedWriter bufferWriter = new BufferedWriter(streamWriter);
-		try {
-			bufferWriter.write(message);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		printwriter.println(message); // write the message to output stream
+		if (printwriter.checkError()) {
 			return false;
 		}
+		printwriter.flush();
 
 		return true;
 	}
