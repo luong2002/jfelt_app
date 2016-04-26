@@ -1,14 +1,11 @@
 package com.example.felipe.safe_drive_app;
 
-import android.os.AsyncTask;
-import android.util.Log;
 
+import android.util.Log;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import android.os.Looper;
+import java.io.ObjectInputStream;
+import messages.StudentMessage;
 
 /**
  * Created by felipe on 4/18/2016.
@@ -16,8 +13,7 @@ import android.os.Looper;
 public class Communication_Thread extends Thread{
 
     private Socket server;
-    private InputStreamReader streamReader;
-    private BufferedReader bufferedReader;
+    private ObjectInputStream streamReader;
     private boolean execute;
 
 
@@ -25,23 +21,25 @@ public class Communication_Thread extends Thread{
     public Communication_Thread(Socket server) throws IOException
     {
         this.server = server;
-        this.streamReader = new InputStreamReader(server.getInputStream());
-        this.bufferedReader = new BufferedReader(streamReader);
+        this.streamReader = new ObjectInputStream(server.getInputStream());
         this.execute = false;
     }
 
     public void  run() {
-        String messageReceived;
+        StudentMessage messageReceived;
         execute = true;
        while (execute) {
             try {
-                if (bufferedReader.ready()) {
-                    messageReceived = bufferedReader.readLine();
-                    Log.i("info", messageReceived);
-                }
+                    messageReceived = (StudentMessage) streamReader.readObject();
+                    Log.i("info", messageReceived.getMessage());
+
             } catch (IOException e) {
                 execute = false;
                 e.printStackTrace();
+            }catch(ClassNotFoundException e1)
+            {
+                execute = false;
+                e1.printStackTrace();
             }
 
             try {
@@ -54,7 +52,6 @@ public class Communication_Thread extends Thread{
 
         try {
             Log.i("info", "Ended Info Receiver");
-            bufferedReader.close();
             streamReader.close();
         } catch (IOException e) {
             e.printStackTrace();

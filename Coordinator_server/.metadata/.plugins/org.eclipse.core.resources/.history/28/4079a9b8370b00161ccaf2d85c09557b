@@ -1,0 +1,9 @@
+package messages;
+
+import entities.Student;
+
+public class StudentMessage {
+	
+	private Student owner;
+
+}

@@ -1,0 +1,13 @@
+package messages;
+
+import entities.Student;
+
+public class StudentMessage {
+	
+	private Student owner;
+	private String message;
+
+	public StudentMessage(Student owner, String message) {
+		// TODO Auto-generated constructor stub
+	}
+}

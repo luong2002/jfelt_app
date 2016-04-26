@@ -1,18 +1,18 @@
 package threads;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+
+import messages.StudentMessage;
 
 public class Driver_Thread extends Thread {
 
 	private Socket driverSocket;
-	private InputStreamReader streamReader;
-	private OutputStreamWriter streamWriter;
-	private BufferedReader bufferedReader;
+	private ObjectInputStream streamReader;
+	private ObjectOutputStream streamWriter;
 	private boolean execute;
 
 	/**
@@ -31,12 +31,10 @@ public class Driver_Thread extends Thread {
 		super("Server");
 		this.execute = true;
 		this.driverSocket = driverSocket;
-		this.streamWriter = new OutputStreamWriter(
+		this.streamWriter = new ObjectOutputStream(
 				driverSocket.getOutputStream());
-		this.streamReader = new InputStreamReader(driverSocket.getInputStream());
-		this.bufferedReader = new BufferedReader(streamReader); // get the
-																// client
-																// message
+		this.streamReader = new ObjectInputStream(driverSocket.getInputStream());
+
 	}
 
 	/**
@@ -48,18 +46,22 @@ public class Driver_Thread extends Thread {
 	 */
 	@Override
 	public void run() {
-		String message;
+		StudentMessage message;
 		System.out.println("Checking for messages");
 		while (execute) {
 
 			try {
-				if (bufferedReader.ready()) {
-					message = bufferedReader.readLine();
-					System.out.println(message);
+				if (streamReader.available() > 0) {
+					message = (StudentMessage) streamReader.readObject();
+					System.out.println(message.getMessage());
 				}
 			} catch (IOException e) {
 				execute = false;
 				e.printStackTrace();
+			}catch(ClassNotFoundException e1)
+			{
+				execute = false;
+				e1.printStackTrace();
 			}
 			
 			try {
@@ -72,7 +74,6 @@ public class Driver_Thread extends Thread {
 		}
 
 		try {
-			bufferedReader.close();
 			streamReader.close();
 			streamWriter.close();
 			driverSocket.close();
@@ -94,9 +95,11 @@ public class Driver_Thread extends Thread {
 	 * @return True if the message was send successfully and false otherwise
 	 */
 	public boolean sendMessage(String message) {
-		BufferedWriter bufferWriter = new BufferedWriter(streamWriter);
+
 		try {
-			bufferWriter.write(message);
+			ObjectOutputStream bufferWriter = new ObjectOutputStream(streamWriter);
+			StudentMessage sm = new StudentMessage(null, message);
+			bufferWriter.writeObject(sm);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

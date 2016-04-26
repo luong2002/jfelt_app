@@ -45,7 +45,14 @@ public class ClientServer implements Runnable {
 
 	}
 	
-	
+	/**
+	 * Sends a Message to all of the Clients
+	 *
+	 * @author Felipe Izepe
+	 * @version 1.0
+	 * @since 2016-04-25
+	 * @param Message - Message to be sent
+	 */
 	public void messageAll(String message)
 	{
 		Client_Thread ct;

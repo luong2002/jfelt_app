@@ -7,15 +7,16 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
+import java.io.ObjectOutputStream;
+import messages.StudentMessage;
 
 public class Connect_Thread extends AsyncTask<String, Void, Integer> {
 
 
     private static boolean connected;
     private static Socket server;
-    private static PrintWriter printwriter;
+    private static ObjectOutputStream streamWriter;
     private static Communication_Thread cm;
 
     protected Integer doInBackground(String... message) {
@@ -23,7 +24,7 @@ public class Connect_Thread extends AsyncTask<String, Void, Integer> {
         if(!connected) {
             try {
                 server = new Socket("10.0.2.2", 4444);  //connect to server
-                printwriter = new PrintWriter(server.getOutputStream(), true);
+                streamWriter = new ObjectOutputStream(server.getOutputStream());
                 connected = true;
                 cm = new Communication_Thread(server);
             } catch (IOException e) {
@@ -33,12 +34,14 @@ public class Connect_Thread extends AsyncTask<String, Void, Integer> {
 
         Log.i("info", message[0]);
 
-        printwriter.println(message[0]);  //write the message to output stream
-        if(printwriter.checkError())
-        {
-            Log.i("ERROR:","Message not sent");
+        try {
+            StudentMessage sm = new StudentMessage(null, message[0]);
+            streamWriter.writeObject(sm);
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        printwriter.flush();
 
 
         return 0;
@@ -54,7 +57,7 @@ public class Connect_Thread extends AsyncTask<String, Void, Integer> {
     {
         try {
             cm.stopCommunication();
-            printwriter.close();
+            streamWriter.close();
             server.close();   //closing the connection
         } catch (IOException e) {
             e.printStackTrace();

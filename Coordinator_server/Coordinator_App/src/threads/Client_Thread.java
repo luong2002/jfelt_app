@@ -1,17 +1,19 @@
 package threads;
 
-import java.io.BufferedReader;
+
+import java.io.EOFException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+
+import messages.StudentMessage;
 
 public class Client_Thread extends Thread {
 
 	private Socket clientSocket;
-	private InputStreamReader streamReader;
-	private PrintWriter printwriter;
-	private BufferedReader bufferedReader;
+	private ObjectInputStream streamReader;
+	private ObjectOutputStream streamWriter;
 	private boolean execute;
 
 	/**
@@ -30,50 +32,55 @@ public class Client_Thread extends Thread {
 		super("Server");
 		this.execute = true;
 		this.clientSocket = clientSocket;
-		printwriter = new PrintWriter(clientSocket.getOutputStream(), true);
-		this.streamReader = new InputStreamReader(clientSocket.getInputStream());
-		this.bufferedReader = new BufferedReader(streamReader); // get the
-																// client
-																// message
+		this.streamWriter = new ObjectOutputStream(
+				clientSocket.getOutputStream());
+		this.streamReader = new ObjectInputStream(clientSocket.getInputStream());
+
 	}
 
 	/**
 	 * The thread listens for client communication attempts
 	 *
 	 * @author Felipe Izepe
-	 * @version 1.0
+	 * @version 2.0
 	 * @since 2016-04-16
 	 */
 	@Override
 	public void run() {
-		String message;
+		StudentMessage message;
 		System.out.println("Checking for messages");
 		while (execute) {
-			
+
 			try {
-				if (bufferedReader.ready()) {
-					message = bufferedReader.readLine();
-					System.out.println(message);
-					sendMessage("MEssage Received");
+
+					message = (StudentMessage) streamReader.readObject();
+					sendMessage(message.getMessage());
+					System.out.println(message.getMessage());
+
+			}catch(EOFException end)
+			{
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			} catch (IOException e) {
 				execute = false;
 				e.printStackTrace();
+			}catch(ClassNotFoundException e1)
+			{
+				execute = false;
+				e1.printStackTrace();
 			}
-
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+			
 
 		}
 
 		try {
-			bufferedReader.close();
 			streamReader.close();
-			printwriter.close();
+			streamWriter.close();
 			clientSocket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -86,7 +93,7 @@ public class Client_Thread extends Thread {
 	 * attempts to sends a message to the client
 	 *
 	 * @author Felipe Izepe
-	 * @version 1.0
+	 * @version 2.0
 	 * @since 2016-04-16
 	 * @param message
 	 *            - message to be sent
@@ -94,11 +101,14 @@ public class Client_Thread extends Thread {
 	 */
 	public boolean sendMessage(String message) {
 
-		printwriter.println(message); // write the message to output stream
-		if (printwriter.checkError()) {
+		try {
+			StudentMessage sm = new StudentMessage(null, message);
+			streamWriter.writeObject(sm);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return false;
 		}
-		printwriter.flush();
 
 		return true;
 	}
