@@ -2,29 +2,39 @@ package entities;
 
 import java.io.Serializable;
 
-public class Student implements Serializable{
+public class Student extends Entity implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String name;
-	private String ID;
-
+	private String phoneNumber;
+	private String pickUpAddress;
+	private String dropOffAddress;
+	private int numberOfClients;
 	
-	public Student(String name, String ID) {
-		this.name = name;
-		this.ID = ID;
+	public Student(String name, String id, String phoneNumber ,String pickUpAddress, String dropOffAddress,int numberOfClients) {
+		super(id, name);
+		this.phoneNumber = phoneNumber;
+		this.pickUpAddress = pickUpAddress;
+		this.dropOffAddress = dropOffAddress;
+		this.numberOfClients = numberOfClients;
 	}
 	
-	public String getName() {
-		return name;
+	
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
-	public void setName(String name) {
-		this.name = name;
+	
+	public String getDropOffAddress() {
+		return dropOffAddress;
 	}
-	public String getID() {
-		return ID;
+	
+	public String getPickUpAddress() {
+		return pickUpAddress;
 	}
-
+	
+	public int getNumberOfClients() {
+		return numberOfClients;
+	}
 }

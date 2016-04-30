@@ -18,11 +18,15 @@
 <fullyQualifiedTypeName name="threads.Client_Thread"/>
 <fullyQualifiedTypeName name="java.lang.Thread"/>
 <fullyQualifiedTypeName name="java.io.PrintWriter"/>
-<fullyQualifiedTypeName name="entities.Student"/>
-<fullyQualifiedTypeName name="java.io.Serializable"/>
 <fullyQualifiedTypeName name="java.io.ObjectInputStream"/>
 <fullyQualifiedTypeName name="java.io.ObjectOutputStream"/>
 <fullyQualifiedTypeName name="java.lang.ClassNotFoundException"/>
 <fullyQualifiedTypeName name="messages.StudentMessage"/>
 <fullyQualifiedTypeName name="java.io.EOFException"/>
+<fullyQualifiedTypeName name="entities.Entity"/>
+<fullyQualifiedTypeName name="messages.StudentMessage.Operation"/>
+<fullyQualifiedTypeName name="java.io.Serializable"/>
+<fullyQualifiedTypeName name="messages.Message"/>
+<fullyQualifiedTypeName name="entities.Student"/>
+<fullyQualifiedTypeName name="messages.DriverMessage"/>
 </qualifiedTypeNameHistroy>

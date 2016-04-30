@@ -1,24 +1,30 @@
 package entities;
 
-public class Driver {
+import java.io.Serializable;
 
-	private String name;
-	private String ID;
+public class Driver extends Entity implements Serializable{
 	
-	public Driver(String name, String ID) {
-		this.name = name;
-		this.ID = ID;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String license;
+	private String carDescription;
+	
+	
+	public Driver(String name, String id, String license, String carDecription) {
+		super(id, name);
+		this.license = license;
+		this.carDescription = carDecription;
 	}
 	
+
+	public String getLicense() {
+		return license;
+	}
 	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getID() {
-		return ID;
+	public String getCarDescription() {
+		return carDescription;
 	}
 	
 }

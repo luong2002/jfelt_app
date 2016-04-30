@@ -52,7 +52,6 @@ public class Client_Thread extends Thread {
 		while (execute) {
 
 			try {
-
 					message = (StudentMessage) streamReader.readObject();
 					sendMessage(message.getMessage());
 					System.out.println(message.getMessage());

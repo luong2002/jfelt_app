@@ -1,12 +1,13 @@
 package threads;
 
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import messages.StudentMessage;
+import messages.DriverMessage;
 
 public class Driver_Thread extends Thread {
 
@@ -46,14 +47,21 @@ public class Driver_Thread extends Thread {
 	 */
 	@Override
 	public void run() {
-		StudentMessage message;
+		DriverMessage message;
 		System.out.println("Checking for messages");
 		while (execute) {
 
 			try {
-				if (streamReader.available() > 0) {
-					message = (StudentMessage) streamReader.readObject();
-					System.out.println(message.getMessage());
+				message = (DriverMessage) streamReader.readObject();
+				sendMessage(message.getMessage());
+				System.out.println(message.getMessage());
+			}catch(EOFException end)
+			{
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			} catch (IOException e) {
 				execute = false;
@@ -64,12 +72,7 @@ public class Driver_Thread extends Thread {
 				e1.printStackTrace();
 			}
 			
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 
 		}
 
@@ -88,8 +91,8 @@ public class Driver_Thread extends Thread {
 	 * attempts to sends a message to the driver
 	 *
 	 * @author Felipe Izepe
-	 * @version 1.0
-	 * @since 2016-04-16
+	 * @version 2.0
+	 * @since 2016-04-30
 	 * @param message
 	 *            - message to be sent
 	 * @return True if the message was send successfully and false otherwise
@@ -97,9 +100,8 @@ public class Driver_Thread extends Thread {
 	public boolean sendMessage(String message) {
 
 		try {
-			ObjectOutputStream bufferWriter = new ObjectOutputStream(streamWriter);
-			StudentMessage sm = new StudentMessage(null, message);
-			bufferWriter.writeObject(sm);
+			DriverMessage sm = new DriverMessage(null, message);
+			streamWriter.writeObject(sm);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
