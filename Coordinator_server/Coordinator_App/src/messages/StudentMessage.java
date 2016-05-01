@@ -3,7 +3,7 @@ package messages;
 
 import java.io.Serializable;
 
-import entities.Student;
+import entities.Client;
 
 public class StudentMessage implements Serializable{
 	
@@ -15,7 +15,7 @@ public class StudentMessage implements Serializable{
 	private enum Operation{None, Message_To_Server, Message_To_Driver, 
 		Cancel_Request, Make_Request, Report_Error};
 		
-		private Student owner;
+		private Client owner;
 		private String message;
 
 	/**
@@ -24,10 +24,10 @@ public class StudentMessage implements Serializable{
 	 * @author Felipe Izepe
 	 * @version 2.0
 	 * @since 2016-04-30
-	 * @param Student owner of the message
+	 * @param Client owner of the message
 	 * @param String message that will be sent and read
 	 */
-	public StudentMessage(Student owner, String message) {
+	public StudentMessage(Client owner, String message) {
 		this.owner = owner;
 		this.message = message;
 		this.MessageOperation = Operation.None;
@@ -40,7 +40,7 @@ public class StudentMessage implements Serializable{
 	 * @version 1.0
 	 * @since 2016-04-25
 	 */
-	public Student getOwner() {
+	public Client getOwner() {
 		return owner;
 	}
 	

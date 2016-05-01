@@ -121,6 +121,12 @@ public class Client_Thread extends Thread {
 	 */
 	public void endConnection() {
 		this.execute = false;
+		try {
+			streamReader.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

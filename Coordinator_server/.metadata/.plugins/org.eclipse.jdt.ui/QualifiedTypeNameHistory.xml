@@ -15,8 +15,6 @@
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.net.Socket"/>
-<fullyQualifiedTypeName name="threads.Client_Thread"/>
-<fullyQualifiedTypeName name="java.lang.Thread"/>
 <fullyQualifiedTypeName name="java.io.PrintWriter"/>
 <fullyQualifiedTypeName name="java.io.ObjectInputStream"/>
 <fullyQualifiedTypeName name="java.io.ObjectOutputStream"/>
@@ -29,4 +27,8 @@
 <fullyQualifiedTypeName name="messages.Message"/>
 <fullyQualifiedTypeName name="entities.Student"/>
 <fullyQualifiedTypeName name="messages.DriverMessage"/>
+<fullyQualifiedTypeName name="entities.Client"/>
+<fullyQualifiedTypeName name="entities.Driver"/>
+<fullyQualifiedTypeName name="java.lang.Thread"/>
+<fullyQualifiedTypeName name="threads.Client_Thread"/>
 </qualifiedTypeNameHistroy>

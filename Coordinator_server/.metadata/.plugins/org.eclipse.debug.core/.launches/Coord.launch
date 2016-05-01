@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/CoordUI/src/Coord.java"/>
+<listEntry value="/Coordinator_App/src/graphics/Coord.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="Coord"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="CoordUI"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="graphics.Coord"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Coordinator_App"/>
 </launchConfiguration>

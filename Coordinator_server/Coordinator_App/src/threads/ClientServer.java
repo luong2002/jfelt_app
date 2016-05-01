@@ -6,13 +6,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientServer implements Runnable {
+public class ClientServer extends Thread{
 
 	private ServerSocket serverSocket;
 	private List<Client_Thread> clients;
+	private boolean runServer;
 	
 	public ClientServer() {
 		this.clients = new ArrayList<Client_Thread>();
+		this.runServer = true;
 	}
 	
 
@@ -29,7 +31,7 @@ public class ClientServer implements Runnable {
 
 		System.out.println("Server started. Listening to the port 4444");
 
-		while (true) {
+		while (runServer) {
 			try {
 				Socket clientSocket = serverSocket.accept(); // accept the client connection
 				Client_Thread ct = new Client_Thread(clientSocket);
@@ -38,8 +40,8 @@ public class ClientServer implements Runnable {
 				
 
 			} catch (IOException ex) {
-				ex.printStackTrace();
-				System.out.println("Problem in message reading");
+		
+				System.out.println("No longer Listening to the port 4444");
 			}
 		}
 
@@ -60,6 +62,25 @@ public class ClientServer implements Runnable {
 		{
 			ct = clients.get(count1);
 			ct.sendMessage(message);
+		}
+	}
+	
+	public void stopServer()
+	{
+		Client_Thread ct;
+		for(int count1 = 0; count1 < clients.size(); count1++)
+		{
+			ct = clients.get(count1);
+			ct.endConnection();
+		}
+		
+		
+		this.runServer = false;
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

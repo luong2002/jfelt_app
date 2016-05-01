@@ -7,13 +7,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DriverServer implements Runnable {
+public class DriverServer extends Thread{
 
 	private ServerSocket serverSocket;
-	private List<Client_Thread> clients;
+	private List<Driver_Thread> drivers;
+	private boolean runServer;
 	
 	public DriverServer() {
-		this.clients = new ArrayList<Client_Thread>();
+		this.drivers = new ArrayList<Driver_Thread>();
+		this.runServer = true;
 	}
 	
 
@@ -30,17 +32,17 @@ public class DriverServer implements Runnable {
 
 		System.out.println("Server started. Listening to the port 4445");
 
-		while (true) {
+		while (runServer) {
 			try {
 				Socket clientSocket = serverSocket.accept(); // accept the client connection
-				Client_Thread ct = new Client_Thread(clientSocket);
+				Driver_Thread ct = new Driver_Thread(clientSocket);
 				ct.start();
-				this.clients.add(ct);
+				this.drivers.add(ct);
 				
 
 			} catch (IOException ex) {
 
-				System.out.println("Problem in message reading");
+				System.out.println("No longer Listening to the port 4445");
 			}
 		}
 
@@ -49,11 +51,30 @@ public class DriverServer implements Runnable {
 	
 	public void messageAll(String message)
 	{
-		Client_Thread ct;
-		for(int count1 = 0; count1 < clients.size(); count1++)
+		Driver_Thread ct;
+		for(int count1 = 0; count1 < drivers.size(); count1++)
 		{
-			ct = clients.get(count1);
+			ct = drivers.get(count1);
 			ct.sendMessage(message);
+		}
+	}
+	
+	public void stopServer()
+	{
+		this.runServer = false;
+		
+		Driver_Thread ct;
+		for(int count1 = 0; count1 < drivers.size(); count1++)
+		{
+			ct = drivers.get(count1);
+			ct.endConnection();
+		}
+		
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

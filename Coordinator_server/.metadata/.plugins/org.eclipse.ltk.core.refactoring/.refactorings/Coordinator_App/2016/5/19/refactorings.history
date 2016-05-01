@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;entities.Student&apos; to &apos;Client&apos;&#x0D;&#x0A;- Original project: &apos;Coordinator_App&apos;&#x0D;&#x0A;- Original element: &apos;entities.Student&apos;&#x0D;&#x0A;- Renamed element: &apos;entities.Client&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Rename similarly named elements&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Student&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;entities{Student.java[Student" matchStrategy="1" name="Client" qualified="false" references="true" similarDeclarations="true" stamp="1462135211893" textual="false" version="1.0"/>
+</session>

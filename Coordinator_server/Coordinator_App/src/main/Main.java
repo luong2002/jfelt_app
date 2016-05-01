@@ -1,16 +1,24 @@
 package main;
 
-import threads.ClientServer;
-import threads.DriverServer;
+import graphics.Coord;
 
-public class Main {
+import java.awt.EventQueue;
+
+public class Main{
 
 	public static void main(String[] args) {
-		ClientServer cs = new ClientServer();
-		DriverServer ds = new DriverServer();
 		
-		cs.run();
-		ds.run();
+		
+		EventQueue.invokeLater(new Runnable() {
+	        public void run() {
+	            try {
+	                Coord window = new Coord();
+	                window.frame.setVisible(true);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    });
 
 	}
 

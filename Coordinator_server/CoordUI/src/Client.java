@@ -3,7 +3,7 @@ public class Client {
 	private  String Name; 
 	private String Phone; 
 	private String ADflag; // using it to test the button to press once 
-	
+	private String Driver;
 	public  String getName()
 	{
 		return Name;
@@ -29,5 +29,13 @@ public class Client {
 	{
 		return ADflag;
 		
+	}
+	public  String getDriver()
+	{
+		return Driver;
+	}
+	public void setDriver(String driver)
+	{
+		Driver= driver;	
 	}
 }
